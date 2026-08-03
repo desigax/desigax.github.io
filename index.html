@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Александр Хакимов - Графический дизайнер</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles */
+        
+        /* 4. Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #58a6ff;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Плавная прокрутка */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #0d1117; /* Dark background */
+            /* 1. Ambient Glow (Фоновое свечение) - УСИЛЕНО ДЛЯ ВИДИМОСТИ */
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(88, 166, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(162, 89, 255, 0.12) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: #c9d1d9; /* Light text */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            color: #f0f6fc; /* Slightly brighter for headings */
+            font-weight: 600;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 0; 
+            width: 100%; /* Растягиваем фон от края до края экрана */
+            position: sticky;
+            top: 0;
+            background-color: rgba(13, 17, 23, 0.7); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            z-index: 1000; 
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px; /* Ограничиваем только текст, а не фон */
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f0f6fc;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: #c9d1d9;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #58a6ff; /* Accent color */
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #8b949e; /* Muted text */
+            max-width: 800px;
+            margin: 0 auto;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #238636; /* Button green */
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #2ea043;
+        }
+        
+        .btn-outline {
+             background-color: transparent;
+             border: 1px solid #30363d;
+             color: #c9d1d9;
+        }
+        
+        .btn-outline:hover {
+             background-color: #30363d;
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            /* 2. Glassmorphism (Эффект матового стекла) - УЛУЧШЕНО */
+            background-color: rgba(33, 38, 45, 0.4); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.18); /* Добавлен стильный блик на верхнюю грань */
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+            border-color: rgba(88, 166, 255, 0.3);
+        }
+
+        .project-image {
+            width: 100%;
+            /* Делаем формат вертикальным (3:4) - идеальный стандарт для маркетплейсов */
+            aspect-ratio: 3 / 4;
+            /* contain строго запрещает обрезать края картинки */
+            object-fit: contain; 
+            background-color: transparent; 
+            /* Плавный переход для зума */
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* 3. Zoom-эффект при наведении */
+        .project-image-wrapper:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        /* Gallery Overlay */
+        .project-image-wrapper {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(13, 17, 23, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-image-wrapper:hover .image-overlay {
+            opacity: 1;
+        }
+
+        .overlay-text {
+            color: #ffffff;
+            font-weight: 500;
+            padding: 10px 20px;
+            border: 1px solid #ffffff;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(4px);
+        }
+
+        /* Modal / Lightbox */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #fff;
+            font-size: 32px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .close-btn:hover {
+            color: #58a6ff;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 24px;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(88, 166, 255, 0.8);
+        }
+
+        .prev-btn { left: -60px; }
+        .next-btn { right: -60px; }
+        
+        .slide-counter {
+            position: absolute;
+            bottom: -30px;
+            color: #8b949e;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .prev-btn { left: 10px; }
+            .next-btn { right: 10px; }
+            .close-btn { right: 10px; top: -35px; }
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .project-desc {
+            color: #8b949e;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Skills/Tags */
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background-color: rgba(88, 166, 255, 0.1);
+            color: #58a6ff;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            text-align: center;
+            background-color: #161b22;
+            border-top: 1px solid #30363d;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .contact p {
+             color: #8b949e;
+             margin-bottom: 30px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #8b949e;
+            font-size: 14px;
+        }
+        
+        /* Utility for centering images if needed */
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Scroll Animations (Wow-effect) - ИСПРАВЛЕНА РЕЗКОСТЬ (теперь через keyframes) */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0; /* Скрыто до начала прокрутки */
+        }
+
+        .fade-in-up.visible {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Tools Section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .tool-card {
+            /* Glassmorphism для инструментов */
+            background-color: rgba(22, 27, 34, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: left;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(88, 166, 255, 0.4);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .tool-icon {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #21262d;
+            border-radius: 8px;
+        }
+
+        .tool-title {
+            font-size: 20px;
+            color: #f0f6fc;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .tool-desc {
+            color: #8b949e;
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header (Теперь на всю ширину экрана) -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Александр Хакимов</a>
+            <nav>
+                <ul>
+                    <li><a href="#work">Работы</a></li>
+                    <li><a href="#tools">Инструменты</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Hero Section -->
+        <section class="hero fade-in-up">
+            <h1>Привет, я Александр</h1>
+            <p><strong>Графический дизайнер</strong><br><br>Превращаю сложные идеи в понятный, стильный и работающий визуал, который помогает брендам говорить с аудиторией на одном языке.</p>
+            <div class="flex gap-4 justify-center">
+                 <a href="#work" class="btn">Смотреть портфолио</a>
+                 <a href="https://t.me/DesigAX" target="_blank" class="btn btn-outline">Связаться со мной</a>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="work" class="projects">
+            <h2 class="section-title fade-in-up">Избранные проекты</h2>
+            <div class="project-grid">
+                
+                <!-- Project 1: BABY -->
+                <div class="project-card fade-in-up">
+                    <div class="project-image-wrapper" onclick="openGallery('baby')">
+                        <img src="./case1.jpg" onerror="this.onerror=null; this.src='https://placehold.co/1200x900/f5ebe6/5a4a42?text=BABY+Infographics';" alt="Инфографика BABY" class="project-image">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Смотреть кейс</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Инфографика для детского пледа «BABY»</h3>
+                        <p class="project-desc">Разработка серии карточек товара для маркетплейсов. Нежная пастельная эстетика, подчеркивающая мягкость ткани, интеграция 3D-элементов для создания воздушной атмосферы и акцент на ключевые преимущества товара (двусторонний, нежная ткань, для малышей).</p>
+                        <div>
+                            <span class="tag">Инфографика для маркетплейсов</span>
+                            <span class="tag">E-commerce дизайн</span>
+                            <span class="tag">Фотомонтаж</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: PUREBOX -->
+                <div class="project-card fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="project-image-wrapper" onclick="openGallery('purebox')">
+                        <img src="./case2.jpg" onerror="this.onerror=null; this.src='https://placehold.co/1200x900/eef7ee/2d5a27?text=PUREBOX+Infographics';" alt="Инфографика PUREBOX" class="project-image">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Смотреть кейс</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Карточка товара «PUREBOX»</h3>
+                        <p class="project-desc">Создание динамичного и привлекающего внимание дизайна для пищевых контейнеров. Использование эффекта "летающих" продуктов для демонстрации вместительности и свежий цветовой контраст. Четкое выделение важных для покупателя характеристик (BPA free, герметичность).</p>
+                        <div>
+                            <span class="tag">Коммерческая инфографика</span>
+                            <span class="tag">Дизайн упаковки</span>
+                            <span class="tag">Ретушь</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="project-image-wrapper" onclick="openGallery('case3')">
+                        <img src="./case3.jpg" onerror="this.onerror=null; this.src='https://placehold.co/900x1200/21262d/8b949e?text=Кейс+3';" alt="Кейс 3" class="project-image">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Смотреть кейс</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Сыворотка «Hydra Glow»</h3>
+                        <p class="project-desc">Разработка нежного, "чистого" визуала для бьюти-сферы. Использование водных всплесков и светлых тонов для передачи ощущения свежести. Акцент на составе (гиалуроновая кислота) с помощью минималистичных иконок.</p>
+                        <div>
+                            <span class="tag">Beauty-дизайн</span>
+                            <span class="tag">Ozon</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card fade-in-up">
+                    <div class="project-image-wrapper" onclick="openGallery('case4')">
+                        <img src="./case4.jpg" onerror="this.onerror=null; this.src='https://placehold.co/900x1200/21262d/8b949e?text=Кейс+4';" alt="Кейс 4" class="project-image">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Смотреть кейс</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Аромадиффузор для дома</h3>
+                        <p class="project-desc">Создание эстетичной карточки, передающей атмосферу уюта. Работа со светом, тенями от листвы и природными текстурами (камень, лен) для органичной презентации товара премиум-сегмента.</p>
+                        <div>
+                            <span class="tag">Wildberries</span>
+                            <span class="tag">Эстетика</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="project-card fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="project-image-wrapper" onclick="openGallery('case5')">
+                        <img src="./case5.jpg" onerror="this.onerror=null; this.src='https://placehold.co/900x1200/21262d/8b949e?text=Кейс+5';" alt="Кейс 5" class="project-image">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Смотреть кейс</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Кошелек из натуральной кожи</h3>
+                        <p class="project-desc">Брутальный и статусный дизайн для мужского аксессуара. Темные глубокие оттенки, текстура дерева и золотые акценты подчеркивают премиальность. Разработка строгой системы иконок для преимуществ.</p>
+                        <div>
+                            <span class="tag">Премиум визуал</span>
+                            <span class="tag">Предметная ретушь</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="project-card fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="project-image-wrapper" onclick="openGallery('case6')">
+                        <img src="./case6.jpg" onerror="this.onerror=null; this.src='https://placehold.co/900x1200/21262d/8b949e?text=Кейс+6';" alt="Кейс 6" class="project-image">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Смотреть кейс</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Спортивное питание «Whey»</h3>
+                        <p class="project-desc">Агрессивный, динамичный дизайн для спортивной ниши. Использование неонового зеленого, 3D-частиц и брызг шоколада для создания эффекта мощной энергии. Четкая и броская структура характеристик продукта.</p>
+                        <div>
+                            <span class="tag">Спортивный дизайн</span>
+                            <span class="tag">3D-эффекты</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 7 -->
+                <div class="project-card fade-in-up" style="transition-delay: 0s;">
+                    <div class="project-image-wrapper" onclick="openGallery('case7')">
+                        <img src="./case7.jpg" onerror="this.onerror=null; this.src='https://placehold.co/900x1200/21262d/8b949e?text=Кейс+7';" alt="Кейс 7" class="project-image">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Смотреть кейс</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Одежда: Базовый тренч</h3>
+                        <p class="project-desc">Журнальная (editorial) верстка для fashion-сегмента. Чистый, элегантный дизайн с использованием строгой типографики. Фокус на самой модели и крое изделия, без лишнего визуального шума.</p>
+                        <div>
+                            <span class="tag">Fashion</span>
+                            <span class="tag">Журнальная верстка</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 8 -->
+                <div class="project-card fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="project-image-wrapper" onclick="openGallery('case8')">
+                        <img src="./case8.jpg" onerror="this.onerror=null; this.src='https://placehold.co/900x1200/21262d/8b949e?text=Кейс+8';" alt="Кейс 8" class="project-image">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Смотреть кейс</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Робот-пылесос (Hi-tech)</h3>
+                        <p class="project-desc">Технологичный визуал. Холодное неоновое свечение, футуристичные круги и интерфейсные элементы подчеркивают мощность гаджета. Удобное и легко считываемое расположение технических характеристик.</p>
+                        <div>
+                            <span class="tag">Техника</span>
+                            <span class="tag">Hi-tech дизайн</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
+        <!-- Tools Section -->
+        <section id="tools" class="py-10 fade-in-up">
+             <div class="max-w-4xl mx-auto text-center">
+                  <h2 class="section-title">Инструменты и подход</h2>
+                  <div class="tools-grid">
+                      
+                      <!-- Figma Card -->
+                      <div class="tool-card fade-in-up">
+                          <div class="tool-header">
+                              <div class="tool-icon">
+                                  <svg viewBox="0 0 16 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                                      <path fill="#f24e1e" d="M8 0H4a4 4 0 0 0 0 8h4V0z"/>
+                                      <path fill="#ff7262" d="M8 8H4a4 4 0 0 0 0 8h4V8z"/>
+                                      <path fill="#0acf83" d="M8 16H4a4 4 0 0 0 0 8h4a4 4 0 0 0 0-8z"/>
+                                      <path fill="#1abcfe" d="M8 8h4a4 4 0 0 0 0-8H8v8z"/>
+                                      <path fill="#a259ff" d="M12 12a4 4 0 0 1-4 4H8V8h4a4 4 0 0 1 0 8z"/>
+                                  </svg>
+                              </div>
+                              <h3 class="tool-title">Figma</h3>
+                          </div>
+                          <p class="tool-desc">
+                              Моя основная рабочая среда. Здесь я создаю структуру инфографики, верстаю макеты, выстраиваю композицию и собираю финальный, аккуратный дизайн карточек, готовый к загрузке на маркетплейс.
+                          </p>
+                      </div>
+
+                      <!-- AI Tools Card -->
+                      <div class="tool-card fade-in-up" style="transition-delay: 0.1s;">
+                          <div class="tool-header">
+                              <div class="tool-icon" style="color: #a259ff;">
+                                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                                  </svg>
+                              </div>
+                              <h3 class="tool-title">AI-инструменты</h3>
+                          </div>
+                          <p class="tool-desc">
+                              Использую нейросети для генерации уникальных фонов, поиска нестандартных креативных идей и значительного ускорения рутинных процессов. Это позволяет делать дизайн быстрее, сочнее и качественнее конкурентов.
+                          </p>
+                      </div>
+
+                  </div>
+             </div>
+        </section>
+
+        <!-- About Section (Optional/Simple) -->
+        <section id="about" class="py-20 fade-in-up">
+             <div class="max-w-3xl mx-auto text-center">
+                  <h2 class="section-title">Обо мне</h2>
+                  <p class="text-[#8b949e] leading-relaxed mb-6">
+                       Я специализируюсь на создании визуальных решений, которые решают бизнес-задачи. Особое внимание уделяю коммерческому дизайну, инфографике для маркетплейсов и упаковке смыслов.
+                  </p>
+                  <p class="text-[#8b949e] leading-relaxed">
+                       Моя цель — сделать так, чтобы ваш продукт не просто красиво выглядел, но и привлекал внимание нужной аудитории, выделяясь среди конкурентов.
+                  </p>
+             </div>
+        </section>
+
+    </div> <!-- End Container -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact fade-in-up">
+        <div class="container">
+            <h2 class="text-3xl font-semibold mb-4 text-[#f0f6fc]">Давайте работать вместе</h2>
+            <p>Я открыт для новых проектов и сотрудничества.<br>Telegram: <strong>@DesigAX</strong></p>
+            <a href="https://t.me/DesigAX" target="_blank" class="btn">Написать мне в Telegram</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> Александр Хакимов. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Gallery Modal (Lightbox) -->
+    <div id="gallery-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeGallery()">&times;</span>
+            <button class="nav-btn prev-btn" onclick="changeSlide(-1)">&#10094;</button>
+            <img id="gallery-image" src="" alt="Слайд кейса">
+            <button class="nav-btn next-btn" onclick="changeSlide(1)">&#10095;</button>
+            <div class="slide-counter" id="slide-counter">1 / 1</div>
+        </div>
+    </div>
+
+    <script>
+        // Set the current year in the footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Gallery Logic
+        const galleryData = {
+            'baby': [
+                './case1.jpg', 
+                './case1_slide2.jpg',
+                './case1_slide3.jpg',
+                './case1_slide4.jpg',
+                './case1_slide5.jpg',
+                './case1_slide6.jpg',
+                './case1_slide7.jpg',
+                './case1_slide8.jpg',
+                './case1_slide9.jpg',
+                './case1_slide10.jpg'
+            ],
+            'purebox': [
+                './case2.jpg',
+                './case2_slide2.jpg',
+                './case2_slide3.jpg',
+                './case2_slide4.jpg',
+                './case2_slide5.jpg',
+                './case2_slide6.jpg',
+                './case2_slide7.jpg',
+                './case2_slide8.jpg',
+                './case2_slide9.jpg',
+                './case2_slide10.jpg'
+            ],
+            'case3': [
+                './case3.jpg', 
+                './case3_slide2.jpg', './case3_slide3.jpg', './case3_slide4.jpg', 
+                './case3_slide5.jpg', './case3_slide6.jpg', './case3_slide7.jpg', 
+                './case3_slide8.jpg', './case3_slide9.jpg', './case3_slide10.jpg'
+            ],
+            'case4': [
+                './case4.jpg', 
+                './case4_slide2.jpg', './case4_slide3.jpg', './case4_slide4.jpg', 
+                './case4_slide5.jpg', './case4_slide6.jpg', './case4_slide7.jpg', 
+                './case4_slide8.jpg', './case4_slide9.jpg', './case4_slide10.jpg'
+            ],
+            'case5': [
+                './case5.jpg', 
+                './case5_slide2.jpg', './case5_slide3.jpg', './case5_slide4.jpg', 
+                './case5_slide5.jpg', './case5_slide6.jpg', './case5_slide7.jpg', 
+                './case5_slide8.jpg', './case5_slide9.jpg', './case5_slide10.jpg'
+            ],
+            'case6': [
+                './case6.jpg', 
+                './case6_slide2.jpg', './case6_slide3.jpg', './case6_slide4.jpg', 
+                './case6_slide5.jpg', './case6_slide6.jpg', './case6_slide7.jpg', 
+                './case6_slide8.jpg', './case6_slide9.jpg', './case6_slide10.jpg'
+            ],
+            'case7': [
+                './case7.jpg', 
+                './case7_slide2.jpg', './case7_slide3.jpg', './case7_slide4.jpg', 
+                './case7_slide5.jpg', './case7_slide6.jpg', './case7_slide7.jpg', 
+                './case7_slide8.jpg', './case7_slide9.jpg', './case7_slide10.jpg'
+            ],
+            'case8': [
+                './case8.jpg', 
+                './case8_slide2.jpg', './case8_slide3.jpg', './case8_slide4.jpg', 
+                './case8_slide5.jpg', './case8_slide6.jpg', './case8_slide7.jpg', 
+                './case8_slide8.jpg', './case8_slide9.jpg', './case8_slide10.jpg'
+            ]
+        };
+
+        let currentGallery = [];
+        let currentSlideIndex = 0;
+        const modal = document.getElementById('gallery-modal');
+        const galleryImage = document.getElementById('gallery-image');
+        const slideCounter = document.getElementById('slide-counter');
+
+        // Функция быстрой проверки существования картинки
+        function checkImageExists(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
+        }
+
+        async function openGallery(caseId) {
+            const candidateUrls = galleryData[caseId] || [];
+            
+            // Автоматически проверяем, какие из 10 файлов действительно есть в папке
+            const checkPromises = candidateUrls.map(url => checkImageExists(url));
+            const results = await Promise.all(checkPromises);
+            
+            // Оставляем ТОЛЬКО существующие фотографии
+            const validGallery = candidateUrls.filter((_, index) => results[index]);
+
+            if (validGallery.length > 0) {
+                currentGallery = validGallery;
+            } else {
+                // Если ни одна картинка не найдена, показываем первую с заглушкой
+                currentGallery = [candidateUrls[0]];
+            }
+
+            currentSlideIndex = 0;
+            updateGalleryUI();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGallery() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Возврат прокрутки
+        }
+
+        function changeSlide(direction) {
+            currentSlideIndex += direction;
+            
+            // Зацикливание слайдов
+            if (currentSlideIndex >= currentGallery.length) {
+                currentSlideIndex = 0;
+            } else if (currentSlideIndex < 0) {
+                currentSlideIndex = currentGallery.length - 1;
+            }
+            
+            updateGalleryUI();
+        }
+
+        function updateGalleryUI() {
+            const currentImgSrc = currentGallery[currentSlideIndex];
+            galleryImage.src = currentImgSrc;
+            
+            // Если картинки пока нет, показываем стильную заглушку правильных пропорций
+            galleryImage.onerror = function() {
+                const text = `Слайд ${currentSlideIndex + 1}`;
+                this.src = `https://placehold.co/1200x900/21262d/8b949e?text=${encodeURIComponent(text)}`;
+            };
+            
+            slideCounter.textContent = `${currentSlideIndex + 1} / ${currentGallery.length}`;
+        }
+
+        // Закрытие при клике мимо картинки
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeGallery();
+            }
+        });
+
+        // Управление клавиатурой (стрелки и Esc)
+        document.addEventListener('keydown', function(e) {
+            if (!modal.classList.contains('active')) return;
+            if (e.key === 'Escape') closeGallery();
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        // Анимация при прокрутке (WOW-эффект)
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 // 15% блока должно быть видно для начала анимации
+            };
+            
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Анимация срабатывает один раз
+                    }
+                });
+            }, observerOptions);
+            
+            // Находим все элементы с классом fade-in-up и следим за ними
+            const fadeElements = document.querySelectorAll('.fade-in-up');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
